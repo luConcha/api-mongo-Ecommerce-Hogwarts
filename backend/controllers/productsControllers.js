@@ -1,6 +1,7 @@
+const asyncHandler = require('express-async-handler');
 const Product = require('../models/productsModel');
 
-const createProduct = async (req, res) => {
+const createProduct = asyncHandler(async (req, res) => {
   const { name, description, image, amount, price } = req.body; //casaId
   const data = { name, description, image, amount, price };
   if (!name || !amount || !price) {
@@ -27,20 +28,20 @@ const createProduct = async (req, res) => {
     res.status(400);
     throw new Error('No se pudo registrar el producto');
   }
-};
+});
 
-const getProducts = async (req, res) => {
+const getProducts = asyncHandler(async (req, res) => {
   const queryParam = { active: true };
   const products = await Product.find(queryParam);
-  res.status(200).json({ message: 'datos de producto', products });
-};
+  res.status(200).json(products);
+});
 
-const getProductById = async (req, res) => {
+const getProductById = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id);
-  res.status(200).json({ message: 'datos de producto', product });
-};
+  res.status(200).json(product);
+});
 
-const updateProduct = async (req, res) => {
+const updateProduct = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id);
 
   if (!product) {
@@ -54,15 +55,15 @@ const updateProduct = async (req, res) => {
     { new: true }
   );
   res.status(200).json(updateProduct);
-};
+});
 
-const deleteProduct = async (req, res) => {
+const deleteProduct = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const falseActive = { active: false };
   const product = await Product.findByIdAndUpdate(id, falseActive);
 
   res.status(200).json({ message: `Producto ${id} fue eliminado`, product });
-};
+});
 
 module.exports = {
   createProduct,
