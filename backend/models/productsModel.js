@@ -23,6 +23,11 @@ const productSchema = mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  house: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: 'House',
+  },
 });
 
 module.exports = mongoose.model('Product', productSchema);

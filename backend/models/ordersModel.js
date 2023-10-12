@@ -16,6 +16,11 @@ const orderSchema = mongoose.Schema(
       type: Number,
       required: [true, 'Por favor ingrese la cantidad'],
     },
+    house: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'House',
+    },
   },
   {
     timestamps: true,

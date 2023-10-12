@@ -2,9 +2,9 @@ const asyncHandler = require('express-async-handler');
 const Order = require('../models/ordersModel');
 
 const registerOrder = asyncHandler(async (req, res) => {
-  const { product, user, amount } = req.body;
+  const { product, user, amount, house } = req.body;
 
-  const data = { product, user, amount };
+  const data = { product, user, amount, house };
 
   const order = new Order(data);
   await order.save();
@@ -14,6 +14,7 @@ const registerOrder = asyncHandler(async (req, res) => {
       message: 'Pedido Registrado',
       _id: order._id,
       user: req.user.id,
+      house: req.user.house,
     });
   } else {
     res.status(400);

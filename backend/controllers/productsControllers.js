@@ -2,9 +2,9 @@ const asyncHandler = require('express-async-handler');
 const Product = require('../models/productsModel');
 
 const createProduct = asyncHandler(async (req, res) => {
-  const { name, description, image, amount, price } = req.body; //casaId
-  const data = { name, description, image, amount, price };
-  if (!name || !amount || !price) {
+  const { name, description, image, amount, price, house } = req.body; //casaId
+  const data = { name, description, image, amount, price, house };
+  if (!name || !amount || !price || !house) {
     res.status(400);
     throw new Error('Capturar datos requeridos');
   }
@@ -23,6 +23,7 @@ const createProduct = asyncHandler(async (req, res) => {
       message: 'Producto Registrado',
       _id: product._id,
       name: product.name,
+      house: product.house,
     });
   } else {
     res.status(400);
@@ -39,6 +40,12 @@ const getProducts = asyncHandler(async (req, res) => {
 const getProductById = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id);
   res.status(200).json(product);
+});
+
+const getProductsByHouseId = asyncHandler(async (req, res) => {
+  const queryParam = { house: req.params.id };
+  const products = await Product.find(queryParam);
+  res.status(200).json(products);
 });
 
 const updateProduct = asyncHandler(async (req, res) => {
@@ -69,6 +76,7 @@ module.exports = {
   createProduct,
   getProducts,
   getProductById,
+  getProductsByHouseId,
   updateProduct,
   deleteProduct,
 };

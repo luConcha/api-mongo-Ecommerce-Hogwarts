@@ -4,8 +4,8 @@ const asyncHandler = require('express-async-handler');
 const User = require('../models/usersModel');
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password } = req.body; //casaId
-  if (!name || !email || !password) {
+  const { name, email, password, house } = req.body; //casaId
+  if (!name || !email || !password || !house) {
     res.status(400);
     throw new Error('Datos de usuario no capturados');
   }
@@ -19,13 +19,19 @@ const registerUser = asyncHandler(async (req, res) => {
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
 
-  const user = await User.create({ name, email, password: hashedPassword });
+  const user = await User.create({
+    name,
+    email,
+    password: hashedPassword,
+    house,
+  });
 
   if (user) {
     res.status(201).json({
       _id: user._id,
       name: user.name,
-      email: user.email, //casaid
+      email: user.email,
+      house: user.house,
     });
   } else {
     res.status(400);
@@ -35,8 +41,8 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 
 const loginUser = asyncHandler(async (req, res) => {
-  const { email, password } = req.body; //casaId
-  if (!email || !password) {
+  const { email, password, house } = req.body;
+  if (!email || !password || !house) {
     res.status(400);
     throw new Error('Credenciales no capturadas');
   }
@@ -47,6 +53,7 @@ const loginUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      house: user.house,
       token: generateToken(user._id),
     });
   } else {

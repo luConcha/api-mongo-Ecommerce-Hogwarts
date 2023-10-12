@@ -15,11 +15,11 @@ const userSchema = mongoose.Schema(
       type: String,
       required: [true, 'Por favor ingrese un password'],
     },
-    // house: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   required: true,
-    //   ref: 'House',
-    // },
+    house: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'House',
+    },
   },
   {
     timestamp: true,
